@@ -38,7 +38,7 @@ public class Main extends JFrame {
 		setBounds(100, 100, 450, 300);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		JLabel imageLabel = ImageLabel.getImageLabel(100, 100, "src/images/image1.png");
+		JLabel imageLabel = ImageLabel.getImageLabel(100, 100, "src/images/FondoBase.png");
         contentPane.add(imageLabel);
         JLabel imageLabel1 = ImageLabel.getImageLabel(200, 500, "src/images/image1.png");
         contentPane.add(imageLabel1);
