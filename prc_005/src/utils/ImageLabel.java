@@ -1,5 +1,6 @@
 package utils;
 
+import java.awt.Dimension;
 import java.awt.Image;
 
 import javax.swing.ImageIcon;
@@ -12,7 +13,7 @@ public class ImageLabel {
         Image image = imageIcon.getImage().getScaledInstance(width, height, Image.SCALE_DEFAULT);
         ImageIcon scaledIcon = new ImageIcon(image);
         result.setIcon(scaledIcon);
-        result.setBounds(0, 0, width, height);
+        result.setPreferredSize(new Dimension(width, height));
         return result;
     }
 }

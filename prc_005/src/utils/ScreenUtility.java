@@ -20,12 +20,23 @@ public class ScreenUtility {
         result.setLayout(null);
         
     	
-        JPanel backgroundPanel = new JPanel();
-		JLabel backgroundImage = ImageLabel.getImageLabel(screenWidth, screenHeight, backgroundImagePath);
-		backgroundPanel.add(backgroundImage);  	
-		result.setContentPane(backgroundPanel);
+        JPanel backgroundPanel = new JPanel(null);
         
+        backgroundPanel.setPreferredSize (screenSize);
+               
+        JLabel backgroundImage = ImageLabel.getImageLabel(screenWidth, screenHeight, backgroundImagePath);
+        backgroundImage.setOpaque(true);
+		
+        backgroundPanel.add(backgroundImage);
+        result.add(backgroundPanel);
+        
+		backgroundPanel.setBorder(null);
+		backgroundPanel.setPreferredSize(screenSize);
+		
+		backgroundImage.setVisible(true);
+		backgroundPanel.setVisible(true);
 		result.setVisible(true);
+		
     	return result;
     	
     }
