@@ -1,9 +1,14 @@
 package main;
 
-import utils.ScreenUtility;
+import utils.Screen;
 
 public class Main {
-    public static void main(String[] args) {
-    	ScreenUtility.getScreen("/src/images/background.png");
-    }
+	
+	public static void main() {
+		
+		Screen screen = new Screen();
+		screen.setVisible(true);
+		
+	}
+
 }
