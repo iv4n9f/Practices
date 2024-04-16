@@ -1,11 +1,11 @@
 package utils;
-
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Image;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -27,32 +27,30 @@ public class Carrousel {
 
         JPanel mainPanel = new JPanel(new GridBagLayout());
         mainPanel.setOpaque(false);
-        
-        
 
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.fill = GridBagConstraints.BOTH;
-        gbc.weightx = 1.0;
-        gbc.weighty = 1.0;
+        gbc.weightx = 0.8;
+        gbc.weighty = 0.8;
         result.add(mainPanel, gbc);
 
-        JButton btnLeft = Button.getButton("/images/Izquierda.png", 20, height);
-        JButton btnRight = Button.getButton("/images/Derecha.png", 20, height);
+        JButton btnLeft = Button.getButton("/images/Izquierda.png", 15, height);
+        JButton btnRight = Button.getButton("/images/Derecha.png", 15, height);
 
         gbc = new GridBagConstraints();
         gbc.anchor = GridBagConstraints.WEST;
-        gbc.insets = new Insets(0, -40, 0, 0); // Ajusta las insets para agregar más espacio entre el panel y el botón izquierdo
+        gbc.insets = new Insets(0, -40, 0, 0);
         mainPanel.add(btnLeft, gbc);
 
         gbc = new GridBagConstraints();
         gbc.anchor = GridBagConstraints.EAST;
-        gbc.insets = new Insets(0, 0, 0, 0); // Ajusta las insets para agregar más espacio entre el panel y el botón derecho
+        gbc.insets = new Insets(0, 0, 0, 0);
         mainPanel.add(btnRight, gbc);
 
         JLabel mainImage = new JLabel();
         mainImage.setHorizontalAlignment(JLabel.CENTER);
         mainImage.setVerticalAlignment(JLabel.CENTER);
-        mainImage.setIcon(getMainImage(text, value, mainPanel));
+        mainImage.setIcon(getMainImage((int)(width/3), (int)(height/3.10), text, value, mainPanel));
 
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
@@ -62,7 +60,6 @@ public class Carrousel {
         gbc.weighty = 1.0;
         mainPanel.add(mainImage, gbc);
 
-        
         JPanel subPanel = new JPanel();
         subPanel.setBackground(Color.WHITE);
         subPanel.setPreferredSize(new Dimension(width, 50));
@@ -75,19 +72,18 @@ public class Carrousel {
         subPanel.setOpaque(false);
         mainPanel.add(subPanel, gbc);
         ImagesButton(subPanel, value);
-        
-        
 
         JPanel backgroundImagesPanel = new JPanel(new BorderLayout());
         backgroundImagesPanel.setOpaque(false);
 
         JLabel backgroundImageLabelLeft = new JLabel();
-        backgroundImageLabelLeft.setIcon(new ImageIcon(Carrousel.class.getResource("/images/ImageBackground.png")));
+        backgroundImageLabelLeft.setIcon(resizeImageIcon("/images/ImageBackground.png", (int)(width/3), (int)(height/3.20)));
         backgroundImagesPanel.add(backgroundImageLabelLeft, BorderLayout.WEST);
 
         JLabel backgroundImageLabelRight = new JLabel();
-        backgroundImageLabelRight.setIcon(new ImageIcon(Carrousel.class.getResource("/images/ImageBackground.png")));
+        backgroundImageLabelRight.setIcon(resizeImageIcon("/images/ImageBackground.png", (int)(width/3), (int)(height/3.20)));
         backgroundImagesPanel.add(backgroundImageLabelRight, BorderLayout.EAST);
+
 
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
@@ -95,7 +91,7 @@ public class Carrousel {
         gbc.fill = GridBagConstraints.BOTH;
         gbc.weightx = 0.0;
         gbc.weighty = 1.0;
-        gbc.insets = new Insets(0, -20, 0, -20);
+        gbc.insets = new Insets(0, -10, 0, -10);
         mainPanel.add(backgroundImagesPanel, gbc);
 
         btnLeft.addActionListener(new ActionListener() {
@@ -108,7 +104,7 @@ public class Carrousel {
                     value = 4;
                 }
                 ImagesButton(subPanel, value);
-                mainImage.setIcon(getMainImage(text, value, mainPanel));
+                mainImage.setIcon(getMainImage((int)(width/3), (int)(height/3.10), text, value, mainPanel));
                 result.repaint();
                 result.revalidate();
             }
@@ -124,7 +120,7 @@ public class Carrousel {
                     value = 0;
                 }
                 ImagesButton(subPanel, value);
-                mainImage.setIcon(getMainImage(text, value, mainPanel));
+                mainImage.setIcon(getMainImage((int)(width/3), (int)(height/3.10),text, value, mainPanel));
                 result.repaint();
                 result.revalidate();
             }
@@ -133,25 +129,36 @@ public class Carrousel {
         return result;
     }
 
-    public static ImageIcon getMainImage(String text, int number, JPanel panel) {
+    public static ImageIcon getMainImage(int width, int height, String text, int number, JPanel panel) {
         String basePath = "/images/" + text;
-        ImageIcon mainImage = new ImageIcon(Carrousel.class.getResource(basePath + String.valueOf(number) + ".png"));
+        ImageIcon mainImageIcon = new ImageIcon(Carrousel.class.getResource(basePath + String.valueOf(number) + ".png"));
+        Image originalImage = mainImageIcon.getImage();
+        Image resizedImage = originalImage.getScaledInstance(width, height, Image.SCALE_SMOOTH);
+        ImageIcon mainImage = new ImageIcon(resizedImage);
         return mainImage;
     }
     
-    public static void ImagesButton (JPanel panel, int value) {
-    	panel.removeAll();
-        panel.setLayout(new FlowLayout(FlowLayout.CENTER, 1, 1));
-    	for (int i = 0 ; i < 5 ; i ++) {
-    		JButton button;
-    		if (i == value) {
-    			button = Button.getButton("/images/PuntoCarruselFilled.png", 10, 10);
-    		}	else {
-    			button = Button.getButton("/images/PuntoCarruselEmpty.png", 10, 10);
-    		}    		
-    		panel.add(button);
-    	}
-    	panel.repaint();
-    	panel.revalidate();
+    public static ImageIcon resizeImageIcon(String imagePath, int width, int height) {
+        ImageIcon imageIcon = new ImageIcon(Carrousel.class.getResource(imagePath));
+        Image originalImage = imageIcon.getImage();
+        Image resizedImage = originalImage.getScaledInstance(width, height, Image.SCALE_SMOOTH);
+        return new ImageIcon(resizedImage);
+    }
+
+
+    public static void ImagesButton(JPanel panel, int value) {
+        panel.removeAll();
+        panel.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 1));
+        for (int i = 0; i < 5; i++) {
+            JButton button;
+            if (i == value) {
+                button = Button.getButton("/images/PuntoCarruselFilled.png", 8, 8);
+            } else {
+                button = Button.getButton("/images/PuntoCarruselEmpty.png", 8, 8);
+            }
+            panel.add(button);
+        }
+        panel.repaint();
+        panel.revalidate();
     }
 }

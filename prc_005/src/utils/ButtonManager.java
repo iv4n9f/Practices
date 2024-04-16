@@ -1,5 +1,6 @@
 package utils;
 
+import java.awt.FlowLayout;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
@@ -25,5 +26,13 @@ public class ButtonManager {
             });
             buttonPanel.add(button);
         }
+
+        // Configurar el layout del panel para que los botones se centren
+        FlowLayout flowLayout = (FlowLayout) buttonPanel.getLayout();
+        flowLayout.setAlignment(FlowLayout.CENTER);
+        flowLayout.setHgap(-40); // Espacio horizontal entre botones
+        flowLayout.setVgap(-5); // Espacio vertical entre botones
+        flowLayout.setAlignOnBaseline(true); // Alinea los componentes basados en la línea base
     }
+
 }
