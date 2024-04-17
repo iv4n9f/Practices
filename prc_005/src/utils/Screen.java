@@ -13,7 +13,6 @@ import javax.swing.border.EmptyBorder;
 
 public class Screen extends JFrame {
 
-    private static final long serialVersionUID = 1L;
     private ArrayList<JButton> buttonList = new ArrayList<>();
     private JPanel buttonPanel;
     private ButtonManager buttonManager;
@@ -60,6 +59,5 @@ public class Screen extends JFrame {
         buttonPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 0));
         buttonPanel.setOpaque(false);
         backgroundImage.add(buttonPanel);
-        
     }
 }

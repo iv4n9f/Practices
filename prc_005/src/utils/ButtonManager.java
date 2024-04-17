@@ -35,4 +35,7 @@ public class ButtonManager {
         flowLayout.setAlignOnBaseline(true); // Alinea los componentes basados en la línea base
     }
 
+    public JPanel getButtonPanel() {
+        return buttonPanel;
+    }
 }
