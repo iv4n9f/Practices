@@ -1,6 +1,5 @@
 package utils;
 
-import java.awt.FlowLayout;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
@@ -9,30 +8,28 @@ import javax.swing.JPanel;
 public class ButtonManager {
     private ArrayList<JButton> buttonList;
     private JPanel buttonPanel;
+    private JPanel mainPanel;
 
-    public ButtonManager(ArrayList<JButton> buttonList, JPanel buttonPanel) {
+    public ButtonManager(ArrayList<JButton> buttonList, JPanel buttonPanel, JPanel mainPanel) {
         this.buttonList = buttonList;
         this.buttonPanel = buttonPanel;
+        this.mainPanel = mainPanel;
     }
 
-    public void addButtons(int screenWidth, int screenHeight, JPanel backgroundImage) {
+    public void addButtons() {
         String basePath = "/images/LauncherButton";
+        int screenWidth = buttonPanel.getWidth();
+        int screenHeight = buttonPanel.getHeight();
+
         for (int i = 0; i < 14; i++) {
             String buttonName = "Button" + i;
-            JButton button = Button.getButton(basePath + i + ".png", screenWidth, screenHeight);
+            JButton button = Button.createButton(basePath + i + ".png");
             buttonList.add(button);
             button.addActionListener(e -> {
-                Panel.addHomePanel(screenWidth, screenHeight, backgroundImage, buttonName);
+                Panel.addHomePanel(screenWidth, screenHeight, mainPanel, buttonName);
             });
             buttonPanel.add(button);
         }
-
-        // Configurar el layout del panel para que los botones se centren
-        FlowLayout flowLayout = (FlowLayout) buttonPanel.getLayout();
-        flowLayout.setAlignment(FlowLayout.CENTER);
-        flowLayout.setHgap(-40); // Espacio horizontal entre botones
-        flowLayout.setVgap(-5); // Espacio vertical entre botones
-        flowLayout.setAlignOnBaseline(true); // Alinea los componentes basados en la línea base
     }
 
     public JPanel getButtonPanel() {
