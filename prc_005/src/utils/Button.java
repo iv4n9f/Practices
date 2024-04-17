@@ -4,18 +4,20 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 
 public class Button {
+    private static final long serialVersionUID = 1L;
 
-    public static JButton createButton(String imagePath) {
+    public static JButton getButton(String imagePath, int screenWidth, int screenHeight) {
         JButton button = new JButton();
-        ImageIcon icon = new ImageIcon(Button.class.getResource(imagePath));
-        button.setIcon(icon);
-        customizeButton(button);
-        return button;
-    }
+        button.setIcon(new ImageIcon(Button.class.getResource(imagePath)));
 
-    private static void customizeButton(JButton button) {
+        // Establecer el tamaño del botón
+        int buttonWidth = screenWidth / 40; // Ajusta el ancho según sea necesario
+        int buttonHeight = screenHeight / 30; // Ajusta la altura según sea necesario
+        button.setSize(buttonWidth, buttonHeight);
+
         button.setOpaque(false);
         button.setContentAreaFilled(false);
         button.setBorderPainted(false);
+        return button;
     }
 }
