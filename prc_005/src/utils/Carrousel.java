@@ -22,36 +22,34 @@ public class Carrousel {
     private static ArrayList<Button> buttonPanel = new ArrayList();
 
     public static JPanel getCarousel(int width, int height, String text) {
+    	
         JPanel result = new JPanel(new GridBagLayout());
-        result.setOpaque(false);
-
         JPanel mainPanel = new JPanel(new GridBagLayout());
-        mainPanel.setOpaque(false);
-
+        JButton btnLeft = Button.getButton("/images/Izquierda.png", 15, height);
+        JButton btnRight = Button.getButton("/images/Derecha.png", 15, height);
+        JLabel mainImage = new JLabel();
+        JPanel subPanel = new JPanel();
+        JPanel backgroundImagesPanel = new JPanel(new BorderLayout());
+        JLabel backgroundImageLabelLeft = new JLabel();
+        JLabel backgroundImageLabelRight = new JLabel();
+        
         GridBagConstraints gbc = new GridBagConstraints();
+        
         gbc.fill = GridBagConstraints.BOTH;
         gbc.weightx = 0.8;
         gbc.weighty = 0.8;
         result.add(mainPanel, gbc);
-
-        JButton btnLeft = Button.getButton("/images/Izquierda.png", 15, height);
-        JButton btnRight = Button.getButton("/images/Derecha.png", 15, height);
-
+        
         gbc = new GridBagConstraints();
         gbc.anchor = GridBagConstraints.WEST;
         gbc.insets = new Insets(0, -40, 0, 0);
         mainPanel.add(btnLeft, gbc);
-
+        
         gbc = new GridBagConstraints();
         gbc.anchor = GridBagConstraints.EAST;
         gbc.insets = new Insets(0, 0, 0, 0);
         mainPanel.add(btnRight, gbc);
-
-        JLabel mainImage = new JLabel();
-        mainImage.setHorizontalAlignment(JLabel.CENTER);
-        mainImage.setVerticalAlignment(JLabel.CENTER);
-        mainImage.setIcon(getMainImage((int)(width/3), (int)(height/3.10), text, value, mainPanel));
-
+        
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 0;
@@ -59,32 +57,15 @@ public class Carrousel {
         gbc.weightx = 1.0;
         gbc.weighty = 1.0;
         mainPanel.add(mainImage, gbc);
-
-        JPanel subPanel = new JPanel();
-        subPanel.setBackground(Color.WHITE);
-        subPanel.setPreferredSize(new Dimension(width, 50));
+        
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 1;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.weightx = 1.0;
         gbc.insets = new Insets(10, 0, 0, 0);
-        subPanel.setOpaque(false);
         mainPanel.add(subPanel, gbc);
-        ImagesButton(subPanel, value);
-
-        JPanel backgroundImagesPanel = new JPanel(new BorderLayout());
-        backgroundImagesPanel.setOpaque(false);
-
-        JLabel backgroundImageLabelLeft = new JLabel();
-        backgroundImageLabelLeft.setIcon(resizeImageIcon("/images/ImageBackground.png", (int)(width/3), (int)(height/3.20)));
-        backgroundImagesPanel.add(backgroundImageLabelLeft, BorderLayout.WEST);
-
-        JLabel backgroundImageLabelRight = new JLabel();
-        backgroundImageLabelRight.setIcon(resizeImageIcon("/images/ImageBackground.png", (int)(width/3), (int)(height/3.20)));
-        backgroundImagesPanel.add(backgroundImageLabelRight, BorderLayout.EAST);
-
-
+        
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 0;
@@ -93,6 +74,23 @@ public class Carrousel {
         gbc.weighty = 1.0;
         gbc.insets = new Insets(0, -10, 0, -10);
         mainPanel.add(backgroundImagesPanel, gbc);
+        
+        result.setOpaque(false);
+        mainPanel.setOpaque(false);
+
+        mainImage.setHorizontalAlignment(JLabel.CENTER);
+        mainImage.setVerticalAlignment(JLabel.CENTER);
+        mainImage.setIcon(getMainImage((int)(width/3), (int)(height/3.10), text, value, mainPanel));
+        subPanel.setBackground(Color.WHITE);
+        subPanel.setPreferredSize(new Dimension(width, 50));
+        subPanel.setOpaque(false);
+        ImagesButton(subPanel, value);     
+        backgroundImagesPanel.setOpaque(false);
+        backgroundImageLabelLeft.setIcon(resizeImageIcon("/images/ImageBackground.png", (int)(width/3), (int)(height/3.20)));
+        backgroundImagesPanel.add(backgroundImageLabelLeft, BorderLayout.WEST);
+        backgroundImageLabelRight.setIcon(resizeImageIcon("/images/ImageBackground.png", (int)(width/3), (int)(height/3.20)));
+        backgroundImagesPanel.add(backgroundImageLabelRight, BorderLayout.EAST);
+
 
         btnLeft.addActionListener(new ActionListener() {
             @Override
