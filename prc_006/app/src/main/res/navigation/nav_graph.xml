@@ -1,0 +1,19 @@
+<!-- res/navigation/nav_graph.xml -->
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/homeScreenFragment">
+
+    <fragment
+        android:id="@+id/homeScreenFragment"
+        android:name="com.olympus.prc_006_mob.HomeList"
+        android:label="Home Screen"
+        tools:layout="@layout/fragment_home_list" />
+
+    <fragment
+        android:id="@+id/homePlayerFragment"
+        android:name="com.olympus.prc_006_mob.HomePlayer"
+        android:label="Home Player"
+        tools:layout="@layout/fragment_home_player" />
+</navigation>
