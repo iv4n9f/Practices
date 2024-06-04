@@ -26,7 +26,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/homeFragment"
-        tools:layout_editor_absoluteX="0dp">
+        tools:layout_editor_absoluteX="0dp" >
 
         <ImageButton
             android:id="@+id/homeIconButtonMain"
@@ -36,19 +36,47 @@
             android:backgroundTint="@color/main_blue"
             android:clickable="true"
             android:focusable="true"
+            android:layout_margin="17dp"
             android:src="@drawable/button_main"
             app:tint="@color/main_white" />
 
         <ImageButton
-            android:id="@+id/homeIconButtonPlayer"
+            android:id="@+id/homeIconButtonHeadset"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_gravity="center"
             android:backgroundTint="@color/main_blue"
             android:clickable="true"
             android:focusable="true"
-            android:src="@drawable/button_player"
+            android:src="@drawable/button_headset"
+            android:layout_margin="17dp"
             app:tint="@color/main_white" />
+
+        <ImageButton
+            android:id="@+id/homeIconButtonUser"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:backgroundTint="@color/main_blue"
+            android:clickable="true"
+            android:focusable="true"
+            android:src="@drawable/button_user"
+            android:layout_margin="17dp"
+            app:tint="@color/main_white" />
+
+        <ImageButton
+            android:id="@+id/homeIconButtonSettings"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:backgroundTint="@color/main_blue"
+            android:clickable="true"
+            android:focusable="true"
+            android:src="@drawable/button_settings"
+            android:layout_margin="17dp"
+            app:tint="@color/main_white" />
+
+
 
     </LinearLayout>
 

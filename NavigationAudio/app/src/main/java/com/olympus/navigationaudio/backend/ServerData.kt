@@ -5,7 +5,7 @@ import com.google.gson.reflect.TypeToken
 
 class ServerData {
 
-    private val data = """ 
+    public val data = """ 
          {
            "music": [
              {
@@ -109,6 +109,7 @@ class ServerData {
         }
 
         return Triple(modules, subjects, lessons)
+
     }
 
 }
