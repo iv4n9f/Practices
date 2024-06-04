@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.olympus.navigationaudio.R
 
-class ServerDataAdapter(private val lessonList: List<ServerData.Lesson> ) : RecyclerView.Adapter<ServerDataViewHolder>() {
+class ServerDataAdapter(private val lessonList: List<ServerData.Lesson>, private val subjectList : List<ServerData.Subject> ) : RecyclerView.Adapter<ServerDataViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ServerDataViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
         return  ServerDataViewHolder(layoutInflater.inflate(R.layout.lesson_cardview, parent, false ))
@@ -17,7 +17,8 @@ class ServerDataAdapter(private val lessonList: List<ServerData.Lesson> ) : Recy
 
     override fun onBindViewHolder(holder: ServerDataViewHolder, position: Int) {
         val item = lessonList[position]
-        holder.renderLesson(item)
+        val subject = subjectList[position]
+        holder.renderLesson(item, subject)
     }
 
 }
