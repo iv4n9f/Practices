@@ -8,9 +8,48 @@
     tools:context=".mobile.MainActivity">
 
     <androidx.fragment.app.FragmentContainerView
-        android:name="androidx.navigation.fragment.NavHostFragment"
         android:id="@+id/homeFragment"
+        android:name="androidx.navigation.fragment.NavHostFragment"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/homeNavigationBar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <LinearLayout
+        android:id="@+id/homeNavigationBar"
+        android:layout_width="match_parent"
+        android:layout_height="75dp"
+        android:background="@color/main_blue"
+        android:gravity="center"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/homeFragment"
+        tools:layout_editor_absoluteX="0dp">
+
+        <ImageButton
+            android:id="@+id/homeIconButtonMain"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:backgroundTint="@color/main_blue"
+            android:clickable="true"
+            android:focusable="true"
+            android:src="@drawable/button_main"
+            app:tint="@color/main_white" />
+
+        <ImageButton
+            android:id="@+id/homeIconButtonPlayer"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:backgroundTint="@color/main_blue"
+            android:clickable="true"
+            android:focusable="true"
+            android:src="@drawable/button_player"
+            app:tint="@color/main_white" />
+
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

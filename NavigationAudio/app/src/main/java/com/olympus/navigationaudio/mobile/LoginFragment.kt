@@ -43,10 +43,11 @@ class LoginFragment : Fragment() {
     }
 
     fun initialize(view: View) {
-        fragmentLoginUsernameInputText = view.findViewById(R.id.fragmentLoginUsernameInput)
+        fragmentLoginUsernameInputText = view.findViewById(R.id.fragmentLoginUsernameInputText)
         fragmentLoginPasswordInputText = view.findViewById(R.id.fragmentLoginPasswordInputText)
         fragmentLoginButton = view.findViewById(R.id.fragmentLoginButton)
         fragmentRegisterButton = view.findViewById(R.id.fragmentRegisterButton)
+        setListeners()
     }
 
     fun setListeners(){
@@ -57,12 +58,18 @@ class LoginFragment : Fragment() {
             if (loginStatus){
                 val intent = Intent(activity, HomeActivity::class.java)
                 startActivity(intent)
+            } else {
+                fragmentLoginUsernameInputText.error = "Invalid Username"
+                fragmentLoginPasswordInputText.error = "Invalid Password"
             }
 
         }
         fragmentRegisterButton.setOnClickListener(){
-            val username = fragmentLoginUsernameInputText.text.toString()
-            val password = fragmentLoginPasswordInputText.text.toString()
+            val fragment = RegisterFragment()
+            val transaction = requireActivity().supportFragmentManager.beginTransaction()
+            transaction.replace(R.id.fragment_login, fragment)
+            transaction.addToBackStack(null)
+            transaction.commit()
         }
     }
 
