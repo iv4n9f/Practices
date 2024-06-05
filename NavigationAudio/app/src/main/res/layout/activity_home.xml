@@ -26,17 +26,17 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/homeFragment"
-        tools:layout_editor_absoluteX="0dp" >
+        tools:layout_editor_absoluteX="0dp">
 
         <ImageButton
             android:id="@+id/homeIconButtonMain"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_gravity="center"
-            android:backgroundTint="@color/main_blue"
-            android:clickable="true"
-            android:focusable="true"
             android:layout_margin="17dp"
+            android:backgroundTint="@color/main_blue"
+            android:clickable="false"
+            android:focusable="false"
             android:src="@drawable/button_main"
             app:tint="@color/main_white" />
 
@@ -45,11 +45,11 @@
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_gravity="center"
-            android:backgroundTint="@color/main_blue"
-            android:clickable="true"
-            android:focusable="true"
-            android:src="@drawable/button_headset"
             android:layout_margin="17dp"
+            android:backgroundTint="@color/main_blue"
+            android:clickable="false"
+            android:focusable="false"
+            android:src="@drawable/button_headset"
             app:tint="@color/main_white" />
 
         <ImageButton
@@ -57,11 +57,11 @@
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_gravity="center"
-            android:backgroundTint="@color/main_blue"
-            android:clickable="true"
-            android:focusable="true"
-            android:src="@drawable/button_user"
             android:layout_margin="17dp"
+            android:backgroundTint="@color/main_blue"
+            android:clickable="false"
+            android:focusable="false"
+            android:src="@drawable/button_user"
             app:tint="@color/main_white" />
 
         <ImageButton
@@ -69,13 +69,12 @@
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_gravity="center"
-            android:backgroundTint="@color/main_blue"
-            android:clickable="true"
-            android:focusable="true"
-            android:src="@drawable/button_settings"
             android:layout_margin="17dp"
+            android:backgroundTint="@color/main_blue"
+            android:clickable="false"
+            android:focusable="false"
+            android:src="@drawable/button_settings"
             app:tint="@color/main_white" />
-
 
 
     </LinearLayout>

@@ -13,4 +13,7 @@ public class MediaBrowserService extends Service {
     public IBinder onBind(Intent intent) {
         return null;
     }
+
+    // TODO media browser service
+
 }
