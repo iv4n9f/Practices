@@ -65,6 +65,7 @@
             android:maxLines="1"
             android:minWidth="500dp"
             android:textColorHint="@color/main_white"
+            android:foregroundTint="@color/main_white"
             app:boxBackgroundColor="@color/main_blue"
             app:boxStrokeColor="@color/main_cyan"
             app:cursorColor="@color/main_cyan"
@@ -75,7 +76,8 @@
             app:shapeAppearance="@color/main_white"
             app:shapeAppearanceOverlay="@color/main_white"
             app:startIconDrawable="@drawable/password"
-            app:startIconTint="@color/main_white">
+            app:startIconTint="@color/main_white"
+            app:endIconTint="@color/main_white">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/fragmentLoginPasswordInputText"

@@ -1,123 +1,140 @@
 package com.olympus.navigationaudio.backend
 
-import android.Manifest
-import android.app.PendingIntent
-import android.app.Service.START_NOT_STICKY
 import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.media.MediaPlayer
+import android.net.Uri
+import android.os.Bundle
 import android.os.IBinder
-import androidx.core.app.ActivityCompat
-import androidx.core.app.NotificationCompat
-import androidx.core.app.NotificationManagerCompat
-import com.olympus.navigationaudio.R
+import android.support.v4.media.MediaBrowserCompat
+import android.support.v4.media.MediaDescriptionCompat
+import androidx.media.MediaBrowserServiceCompat
+import java.io.IOException
 
-class MediaService {
+class MediaService : MediaBrowserServiceCompat() {
+
+    var mediaPlayerCurrent: MediaPlayer? = null
+    lateinit var lessonList : List<ServerData.Lesson>
+
     companion object {
-        private const val CHANNEL_ID = "MediaPlaybackChannel"
-        private const val NOTIFICATION_ID = 101
-
-        private var notificationId = 0
-        private val mediaPlayerMap: MutableMap<Int, MediaPlayer> = mutableMapOf()
-        private var mediaPlayerIdCounter = 0
+        private const val ROOT_ID = "com.olympus.navigationaudio.root"
+    }
+    override fun onCreate() {
+        super.onCreate()
+        val serverData = ServerData()
+        val (modules, subjects, lessons) = serverData.getDataParsed(serverData.data,"username","password")
+        lessonList = lessons
     }
 
-    fun playMedia(context: Context, name: String ,url: String, mediaPlayer: MediaPlayer) {
-        stopMedia(mediaPlayer)
-        showNotification(context, name, mediaPlayer, url)
-        mediaPlayer.apply {
-            setDataSource(url)
-            prepare()
-            start()
+    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        return START_STICKY
+    }
+
+    fun playMedia(context: Context, name: String,url: String, mediaPlayer: MediaPlayer) {
+        mediaPlayerCurrent = mediaPlayer
+        mediaPlayer.let {
+            try {
+                it.reset()
+                it.setDataSource(url)
+                it.prepare()
+                it.start()
+            } catch (e: IOException) {
+                e.printStackTrace()
+            }
         }
     }
 
     fun stopMedia(mediaPlayer: MediaPlayer) {
-        mediaPlayer.apply {
-            if (isPlaying) {
-                stop()
+        mediaPlayer.let {
+            if (it.isPlaying) {
+                it.pause()
             }
-            reset()
         }
     }
 
-    private fun pauseMedia(mediaPlayer: MediaPlayer) {
-        mediaPlayer?.pause()
+    fun resumeMedia(mediaPlayer: MediaPlayer) {
+        mediaPlayer.let {
+            if (!it.isPlaying) {
+                it.start()
+            }
+        }
     }
 
-    fun onBind(intent: Intent?): IBinder? {
+    fun getMediaPlayer() : MediaPlayer? {
+        return mediaPlayerCurrent
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        mediaPlayerCurrent?.release()
+        mediaPlayerCurrent = null
+    }
+
+    override fun onBind(intent: Intent?): IBinder? {
         return null
     }
-    fun onStartCommand(context: Context, name: String, intent: Intent?, flags: Int, startId: Int): Int {
-        if (intent != null && intent.action != null) {
-            when (intent.action) {
-                "PLAY" -> {
-                    val url = intent.getStringExtra("URL")
-                    val mediaPlayerId = mediaPlayerIdCounter++
-                    val mediaPlayer = MediaPlayer().apply {
-                        setDataSource(url)
-                        prepare()
-                        start()
-                    }
-                    mediaPlayerMap[mediaPlayerId] = mediaPlayer
-                    showNotification(context, name , mediaPlayer, "Now Playing")
-                }
-                "PAUSE" -> {
-                    // Pausar reproducción del MediaPlayer asociado al ID
-                    val mediaPlayerId = intent.getIntExtra("MEDIA_PLAYER_ID", -1)
-                    mediaPlayerMap[mediaPlayerId]?.pause()
-                }
-            }
-        }
-        return START_NOT_STICKY
+
+    override fun onGetRoot(
+        clientPackageName: String,
+        clientUid: Int,
+        rootHints: Bundle?
+    ): BrowserRoot? {
+        TODO("Not yet implemented")
     }
 
-    private fun showNotification(context: Context,notificationTitle: String, mediaPlayer: MediaPlayer, url: String) {
-        val playIntent = Intent(context, MediaBroadcastReceiver::class.java).apply {
-            action = "PLAY"
-            putExtra("URL", url)
-        }
-        val pauseIntent = Intent(context, MediaBroadcastReceiver::class.java).apply {
-            action = "PAUSE"
-        }
-        val mediaPlayer = mediaPlayer
-        val playPendingIntent = PendingIntent.getBroadcast(context, 0, playIntent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
-        val pausePendingIntent = PendingIntent.getBroadcast(context, 0, pauseIntent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
-
-        val playIcon = R.drawable.button_player
-        val pauseIcon = R.drawable.button_pause
-
-        val builder = NotificationCompat.Builder(context, CHANNEL_ID)
-            .setSmallIcon(R.drawable.ic_launcher_foreground)
-            .setContentTitle(notificationTitle)
-            .setContentText("Media is playing")
-            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-            .addAction(playIcon, "Play", playPendingIntent) // Botón de play
-            .addAction(pauseIcon, "Pause", pausePendingIntent) // Botón de pause
-
-        with(NotificationManagerCompat.from(context)) {
-            if (ActivityCompat.checkSelfPermission(
-                    context,
-                    Manifest.permission.POST_NOTIFICATIONS
-                ) != PackageManager.PERMISSION_GRANTED
-            ) {
-                // TODO: Consider calling
-                //    ActivityCompat#requestPermissions
-                // here to request the missing permissions, and then overriding
-                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                //                                          int[] grantResults)
-                // to handle the case where the user grants the permission. See the documentation
-                // for ActivityCompat#requestPermissions for more details.
-                return
-            }
-            notify(notificationId, builder.build())
+    override fun onLoadChildren(
+        parentId: String,
+        result: Result<MutableList<MediaBrowserCompat.MediaItem>>
+    ) {
+        // Verificar si el parentId es el root o si coincide con algún otro ID esperado
+        if (parentId == ROOT_ID) {
+            // Si el parentId es el root, cargar los elementos multimedia principales
+            result.sendResult(createMediaItemsForRoot())
+        } else {
+            // De lo contrario, cargar los elementos multimedia correspondientes al parentId
+            result.sendResult(createMediaItemsForParent(parentId))
         }
     }
 
+    private fun createMediaItemsForRoot(): MutableList<MediaBrowserCompat.MediaItem> {
+        // Aquí deberías crear y devolver una lista de elementos multimedia principales
+        // Esta lista puede incluir álbumes, canciones, listas de reproducción, etc.
+        // Puedes obtener la lista de lecciones desde tu variable lessonList y convertirla en elementos multimedia
+
+        val mediaItems = mutableListOf<MediaBrowserCompat.MediaItem>()
+
+        // Iterar sobre la lista de lecciones y convertirla en elementos multimedia
+        for (lesson in lessonList) {
+            val audioUri = Uri.parse(lesson.audio)
+            // Crear un MediaDescriptionCompat para representar cada lección como un elemento multimedia
+            val mediaDescription = MediaDescriptionCompat.Builder()
+                .setMediaId(lesson.number.toString()) // Usar el ID de la lección como ID multimedia
+                .setTitle(lesson.name) // Usar el nombre de la lección como título multimedia
+                .setMediaUri(audioUri)
+                .build()
+
+
+            // Crear un MediaItem con el MediaDescriptionCompat creado
+            val mediaItem = MediaBrowserCompat.MediaItem(
+                mediaDescription,
+                MediaBrowserCompat.MediaItem.FLAG_PLAYABLE
+            )
+
+            // Agregar el MediaItem a la lista de elementos multimedia
+            mediaItems.add(mediaItem)
+        }
+
+        return mediaItems
+    }
+
+    private fun createMediaItemsForParent(parentId: String): MutableList<MediaBrowserCompat.MediaItem> {
+        // Aquí deberías crear y devolver una lista de elementos multimedia para el parentId proporcionado
+        // Puedes implementar la lógica para cargar elementos multimedia específicos según sea necesario
+
+        // Por ejemplo, si tienes una estructura jerárquica de elementos multimedia, puedes cargar
+        // subelementos multimedia correspondientes al parentId
+
+        return mutableListOf() // Devolver una lista vacía como ejemplo
+    }
 
 }
-
-
-
-

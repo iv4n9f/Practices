@@ -1,28 +1,38 @@
 package com.olympus.navigationaudio.mobile
 
 import android.content.res.ColorStateList
+import android.media.MediaPlayer
 import android.os.Bundle
 import android.widget.ImageButton
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.olympus.navigationaudio.R
+import com.olympus.navigationaudio.backend.ServerDataViewHolder
 
+class HomeActivity : AppCompatActivity(), ServerDataViewHolder.HomeActivityListener {
 
-class HomeActivity : AppCompatActivity() {
-
+    lateinit var mediaPlayer: MediaPlayer
     lateinit var homeIconButtonMain: ImageButton
     lateinit var homeIconButtonHeadset: ImageButton
     lateinit var homeIconButtonUser: ImageButton
     lateinit var homeIconButtonSettings: ImageButton
+    lateinit var imageSource : String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        mediaPlayer = MediaPlayer()
         setContentView(R.layout.activity_home)
+        val fragment = ListFragment(mediaPlayer)
         supportFragmentManager.beginTransaction()
-            .replace(R.id.homeFragment,ListFragment())
+            .replace(R.id.homeFragment, fragment)
             .commit()
+        supportFragmentManager.executePendingTransactions()
         initialize()
-        changeColor(homeIconButtonMain)
+        setSourceImage("")
+    }
+
+    override fun setSourceImage(imageUrl : String){
+        imageSource = imageUrl
     }
 
 
@@ -38,14 +48,13 @@ class HomeActivity : AppCompatActivity() {
 
         homeIconButtonMain.setOnClickListener(){
             supportFragmentManager.beginTransaction()
-                .replace(R.id.homeFragment,ListFragment())
+                .replace(R.id.homeFragment,ListFragment(mediaPlayer))
                 .commit()
             buttonSelected(homeIconButtonMain)
-
         }
         homeIconButtonHeadset.setOnClickListener(){
             supportFragmentManager.beginTransaction()
-                .replace(R.id.homeFragment,PlayerFragment())
+                .replace(R.id.homeFragment,PlayerFragment(mediaPlayer, imageSource))
                 .commit()
             buttonSelected(homeIconButtonHeadset)
         }
