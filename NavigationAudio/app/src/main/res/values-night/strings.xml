@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string name="fragmentLoginUsernameText">Username</string>
-    <string name="fragmentLoginPasswordText">Password</string>
-    <string name="fragmentLoginButtonText">Login</string>
-    <string name="fragmentRegisterButtonText">Register</string>
-</resources>

@@ -1,9 +1,0 @@
-<resources>
-    <string name="app_name">Universae</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Login Screen</string>
-    <string name="fragmentLoginUsernameText">Username</string>
-    <string name="fragmentLoginPasswordText">Password</string>
-    <string name="fragmentLoginButtonText">Login</string>
-    <string name="fragmentRegisterButtonText">Register</string>
-</resources>
